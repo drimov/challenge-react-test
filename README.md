@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# Challenge-react-test
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Définitions des spécifications
 
-## Available Scripts
+*Spécification du DarkMode*:
 
-In the project directory, you can run:
+- Le thème doit changer lors du clique sur le bouton.
+- Le thème doit être stocker dans le cache locale.
+- Si le thème est déjà en cache, lors du rechargement de la page celui-ci doit être le même.
+- Si le thème n'est pas en cache, alors il doit avoir le mode clair par défaut.
 
-### `npm start`
+*Spécification du champs de recherche*:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Le champs de recherche est vide par défaut.
+- Le mot clé tapé dans le champs de recherche doit être le même que celui recherché.
+- Lorsque le champs de recherche est effacer, le mot recherché doit être nulle.
+- Si le mot clé correspond à des résultats, une liste de pays doit être retourné.
+- Si le mot clé ne correspond à aucun résultat alors une phrase disant qu'il n'y aucun résultat correspondant à la recherche.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+*Spécification pour le menu déroulant*:
 
-### `npm test`
+- Le filtre doit correspondre au filtre choisi.
+- Le filtre par défaut est 'All'.
+- Si le filtre choisi est différent 'All', on doit pouvoir avoir le filtre disponible 'All' dans la liste des filtres.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+*Spécification pour les données de contryAPI*:
 
-### `npm run build`
+- Par défaut les données sont nulles.
+- Lors du chargement de la page, les données récupérées, un message de chargement est affiché.
+- Si la récupération de donné échoue, il y a une erreur qui est retournée.
+- Si les données sont récupérées, alors ils seront affichées.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Le challenge
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Réécriture complète du challenge react hook avancé avec l'approche TDD (Test Driven Development), création des spécifications nécessaire aux tests avant d'écrire le code source.
+- Mise en place des librairies *twin.macro* et *styled-components* pour une lisibilité et simplifié les composants.
+- Utilisations des compétences apprises et qui sont nécessaires pour effectuer le challenge.
