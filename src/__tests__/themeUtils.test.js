@@ -1,7 +1,7 @@
 import { textToTheme, themeToText } from '../utils/themeUtils'
 import { themes } from '../context/themeContext'
 
-describe('Test des fonctionnalitées du `themeUtils`', () => {
+describe('Test des fonctions de `themeUtils`', () => {
 	test('converti un texte `light` on récupère le thème clair', () => {
 		const text = 'light'
 

@@ -6,7 +6,7 @@ beforeEach(() => {
 	window.localStorage.clear()
 })
 
-describe('Test de la fonctionnalité cache local', () => {
+describe('Test du cache local', () => {
 	test('Le cache local change lors du changement de thème', () => {
 		const { result } = renderHook(useThemeStorage)
 		expect(result.current.local).toBe('light')

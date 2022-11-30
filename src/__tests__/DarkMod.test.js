@@ -4,7 +4,7 @@ import { render } from './test-utils'
 import DarkMod from '../components/DarkMod'
 
 
-describe('Test de la fonctionnalité Thème', () => {
+describe('Test du thème', () => {
 	test('Le thème change lors du clique sur le boutton', () => {
 		render(<DarkMod />)
 
