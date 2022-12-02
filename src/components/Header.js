@@ -17,10 +17,11 @@ const HeaderContainer = styled.header`
 
 const Title = styled.h1`
 	${tw`
-      text-5xl
+      text-2xl
+			md:text-5xl
   `}
 `
-export const Header = () => {
+const Header = () => {
 	const [theme] = useTheme()
 	const { backgroundSd: bg} = theme
 
@@ -33,3 +34,4 @@ export const Header = () => {
 		</HeaderContainer>
 	)
 }
+export default Header

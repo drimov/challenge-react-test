@@ -14,6 +14,12 @@ const Label = styled.label`
         hidden
     `}
 `
+const TextContainer = styled.p`
+	${tw`
+        text-base
+				md:text-2xl
+    `}
+`
 const Button = ({ onClick, children }) => {
 	return (
 		<button
@@ -23,21 +29,19 @@ const Button = ({ onClick, children }) => {
 		</button>
 	)
 }
-const Icon = ({ iconColor }) => {
-	return <MoonIcon className={`${iconColor} h-16`} />
+const Icon = () => {
+	return <MoonIcon className={`h-16`} />
 }
 const Text = ({ theme }) => {
-	const { foreground: fg } = theme
 	return (
-		<p className={`color:${fg}`}>
+		<TextContainer>
 			{theme === themes.light ? 'Light Mode' : 'Dark Mode'}
-		</p>
+		</TextContainer>
 	)
 }
 
 const DarMod = () => {
 	const [theme, setTheme] = useTheme()
-	const { iconColor: ic } = theme
 
 	const handleTheme = () => {
 		theme === themes.light ? setTheme(themes.dark) : setTheme(themes.light)
@@ -47,7 +51,7 @@ const DarMod = () => {
 		<DarkModContainer>
 			<Label htmlFor='themeChange'>Theme</Label>
 			<Button onClick={handleTheme}>
-				<Icon iconColor={ic} />
+				<Icon />
 			</Button>
 			<Text theme={theme} />
 		</DarkModContainer>
