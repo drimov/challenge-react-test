@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import useCountries from '../hooks/useCountries'
+import useFetchCountries from '../hooks/useFetchCountries'
 
 describe('Test de récupération de données dans les cas normaux', () => {
 	beforeEach(() => {
@@ -12,32 +12,35 @@ describe('Test de récupération de données dans les cas normaux', () => {
 	})
 
 	test('Le status par défaut est `idle est les données sont null`', async () => {
-		const { result } = renderHook(useCountries)
-		expect(result.current.state.status).toBe('idle')
-		expect(result.current.state.data).toBe(null)
+		const { result } = renderHook(useFetchCountries)
+		expect(result.current.status).toBe('idle')
+		expect(result.current.data).toBe(null)
 	})
 	test('Lorsque les données sont prêtes, le status est `done` et les données ne sont pas null', async () => {
-		const { result } = renderHook(useCountries)
+		const { result } = renderHook(useFetchCountries)
 		await act(() => {
 			result.current.execute()
 		})
-		expect(result.current.state.status).toBe('done')
-		expect(result.current.state.data).toEqual({ data: 'region' })
+		expect(result.current.status).toBe('done')
+		expect(result.current.data).toEqual({ data: 'region' })
 	})
 })
 describe(`Test d'erreur lors d'appel d'api`, () => {
 	beforeEach(() => {
 		global.fetch = jest.fn(() =>
-			Promise.reject({ error: "Impossible d'appelée l'api" })
+			Promise.resolve({
+				json: () => Promise.reject({ error: "Impossible d'appelée l'api" }),
+			})
 		)
 	})
+
 	test("Le status lors d'une erreur est `fail` et retourne une erreur", async () => {
-		const { result } = renderHook(useCountries)
+		const { result } = renderHook(useFetchCountries)
 		await act(() => {
 			result.current.execute()
 		})
-		expect(result.current.state.status).toBe('fail')
-		expect(result.current.state.error).toMatchInlineSnapshot(`
+		expect(result.current.status).toBe('fail')
+		expect(result.current.error).toMatchInlineSnapshot(`
 Object {
   "error": "Impossible d'appelée l'api",
 }
