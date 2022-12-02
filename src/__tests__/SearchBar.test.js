@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import { screen } from '@testing-library/react'
 import Searchbar from '../components/Searchbar'
-import { render } from './test-utils'
+import { renderTheme } from '../test/test-utils'
 
 const text = 'ceci est un test'
 let handleSearchChange
@@ -12,7 +12,7 @@ beforeEach(() => {
 
 describe('Test du champs de recherche', () => {
 	test('Le champs est vide par défaut', () => {
-		render(
+		renderTheme(
 			<Searchbar
 				handleSearchChange={handleSearchChange}
 			/>
@@ -21,7 +21,7 @@ describe('Test du champs de recherche', () => {
 		expect(screen.getByRole('textbox')).toHaveValue('')
 	})
 	test('Si on écrit dans le champs la méthode handleSearchChange doit être appelée', () => {
-		render(
+		renderTheme(
 			<Searchbar
 				handleSearchChange={handleSearchChange}
 			/>
@@ -32,7 +32,7 @@ describe('Test du champs de recherche', () => {
 		expect(handleSearchChange).toHaveBeenCalled()
 	})
 	test('Le mot clé tapé dans le champs de recherche doit être le même que celui recherché', () => {
-		render(
+		renderTheme(
 			<Searchbar
 				search={text}
 				handleSearchChange={handleSearchChange}
