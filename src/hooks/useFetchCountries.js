@@ -22,7 +22,7 @@ const reducerCountries = (state, action) => {
 
 /**
  *
- * @returns state et la fonctions execute
+ * @returns données,les erreurs et la fonctions execute
  */
 const useFetchCountries = () => {
 	const [state, dispatch] = useReducer(reducerCountries, {
@@ -30,6 +30,8 @@ const useFetchCountries = () => {
 		error: null,
 		status: 'idle',
 	})
+
+	const { data, error, status } = state
 
 	/**
 	 * callback execute une promise
@@ -43,11 +45,7 @@ const useFetchCountries = () => {
 			.catch((err) => dispatch({ type: 'fail', error: err }))
 	}, [])
 
-	const setData = useCallback((countries) => {
-		dispatch({ type: 'done', payload: countries })
-	}, [])
-
-	return { ...state, execute, setData }
+	return { data, error, status, execute }
 }
 
 export default useFetchCountries

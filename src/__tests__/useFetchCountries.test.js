@@ -1,49 +1,75 @@
-import { renderHook } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
-import useFetchCountries from '../hooks/useFetchCountries'
+import { setupServer } from 'msw/node'
+import { rest } from 'msw'
 
-describe('Test de récupération de données dans les cas normaux', () => {
-	beforeEach(() => {
-		global.fetch = jest.fn(() =>
-			Promise.resolve({
-				json: () => Promise.resolve({ data: 'region' }),
-			})
-		)
-	})
+import handlers from '../mocks/handlers'
+import {
+	render,
+	screen,
+	waitForElementToBeRemoved,
+} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import MockCountries from '../mocks/mockCountries'
 
-	test('Le status par défaut est `idle est les données sont null`', async () => {
-		const { result } = renderHook(useFetchCountries)
-		expect(result.current.status).toBe('idle')
-		expect(result.current.data).toBe(null)
-	})
-	test('Lorsque les données sont prêtes, le status est `done` et les données ne sont pas null', async () => {
-		const { result } = renderHook(useFetchCountries)
-		await act(() => {
-			result.current.execute()
-		})
-		expect(result.current.status).toBe('done')
-		expect(result.current.data).toEqual({ data: 'region' })
-	})
+const server = setupServer(...handlers)
+
+beforeAll(() => {
+	server.listen()
 })
-describe(`Test d'erreur lors d'appel d'api`, () => {
-	beforeEach(() => {
-		global.fetch = jest.fn(() =>
-			Promise.resolve({
-				json: () => Promise.reject({ error: "Impossible d'appelée l'api" }),
-			})
-		)
+afterAll(() => {
+	server.close()
+})
+afterEach(() => {
+	server.resetHandlers()
+})
+
+describe("Test du de récupération des données de l'api", () => {
+	test('Le status en idle est `Initialization...`', async () => {
+		render(<MockCountries />)
+		expect(screen.getByText(/Initialization.../i)).toBeInTheDocument()
+	})
+	test('Les données sont null en idle', async () => {
+		render(<MockCountries />)
+		expect(screen.getByText(/Initialization../i)).toBeInTheDocument()
+
+		expect(screen.queryByText(/test1/i)).not.toBeInTheDocument()
+		expect(screen.queryByText(/test2/i)).not.toBeInTheDocument()
 	})
 
-	test("Le status lors d'une erreur est `fail` et retourne une erreur", async () => {
-		const { result } = renderHook(useFetchCountries)
-		await act(() => {
-			result.current.execute()
-		})
-		expect(result.current.status).toBe('fail')
-		expect(result.current.error).toMatchInlineSnapshot(`
-Object {
-  "error": "Impossible d'appelée l'api",
-}
-`)
+	test('Le status en fetching est `Loading...`', async () => {
+		render(<MockCountries />)
+		const button = screen.getByRole('button', { name: 'Update' })
+		expect(screen.getByText(/Initialization../i)).toBeInTheDocument()
+
+		userEvent.click(button)
+		await waitForElementToBeRemoved(() => screen.queryByText('Loading...'))
 	})
+	test('Le status en done renvoie les données', async () => {
+		render(<MockCountries />)
+		const button = screen.getByRole('button', { name: 'Update' })
+		expect(screen.getByText(/Initialization../i)).toBeInTheDocument()
+
+		userEvent.click(button)
+		await waitForElementToBeRemoved(() => screen.queryByText('Loading...'))
+		expect(screen.getByText(/Done/i)).toBeInTheDocument()
+		expect(screen.getByText(/test1/i)).toBeInTheDocument()
+		expect(screen.getByText(/test2/i)).toBeInTheDocument()
+	})
+	test('Le status fail nous renvoie une erreur', async () => {
+		server.use(
+			rest.get(`https://restcountries.com/v3.1/all`, async (req, res, ctx) => {
+				return res(ctx.status(500))
+
+			})
+		)
+		render(<MockCountries />)
+
+		const button = screen.getByRole('button', { name: 'Update' })
+		expect(screen.getByText(/Initialization../i)).toBeInTheDocument()
+
+		userEvent.click(button)
+		const error = await screen.findByText(/Error/i)
+		expect(error).toBeInTheDocument()
+
+	})
+
 })
