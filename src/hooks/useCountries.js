@@ -1,35 +1,19 @@
-import { useReducer, useCallback } from 'react'
-import { apiCountries } from '../commons/api/routes'
+import { useEffect } from 'react'
+import useFetchCountries from '../hooks/useFetchCountries'
 
-const reducerCountries = (state, action) => {
-	switch (action.type) {
-		case 'fetching':
-			return { status: 'fetching', data: null, error: null }
-		case 'done':
-			return { status: 'done', data: action.payload, error: null }
-		case 'fail':
-			return { status: 'fail', data: null, error: action.error }
-		default:
-			throw new Error("L'action sur le reducerCountries n'est pas supportée.")
-	}
-}
+/**
+ * Gère l'appel d'API
+ * @returns les données, erreurs et le status
+ */
 const useCountries = () => {
-	const [state, dispatch] = useReducer(reducerCountries, {
-		data: null,
-		error: null,
-		status: 'idle',
-	})
+	const { data, status, error, execute } = useFetchCountries()
 
-	const execute = useCallback(() => {
-		dispatch({ type: 'fetching' })
-
-		fetch(apiCountries)
-			.then((response) => response.json())
-			.then((countries) => dispatch({ type: 'done', payload: countries }))
-			.catch((err) => dispatch({ type: 'fail', error: err }))
-	}, [])
-
-	return { state, execute }
+	useEffect(() => {
+		if (!data) {
+			execute()
+		}
+	}, [data, execute])
+	return { data, error, status }
 }
 
 export default useCountries
